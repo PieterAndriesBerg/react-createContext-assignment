@@ -1,15 +1,29 @@
-import { useState } from "react";
+import {useState, createContext} from "react";
 import "./App.css";
 import { Switch, Route, Link } from "react-router-dom";
 import Counters from "./pages/Counters";
 import Checkout from "./pages/Checkout";
 import Home from "./pages/Home";
 
+
+export const fruitCounterContext = createContext({});
+
 function App() {
   const [apples, setApples] = useState(0);
   const [bananas, setBananas] = useState(0);
   const [pears, setPears] = useState(0);
   return (
+      <fruitCounterContext.Provider
+          value={{
+            apples: apples,
+            setApples: setApples,
+            bananas: bananas,
+            setBananas: setBananas,
+            pears: pears,
+            setPears: setPears,
+            totalFruit: apples + bananas + pears
+          }}
+      >
     <div className="App">
       <header className="App-header">
         <nav>
@@ -28,23 +42,18 @@ function App() {
         <Switch>
           <Route path="/counters">
             <Counters
-              apples={apples}
-              setApples={setApples}
-              bananas={bananas}
-              setBananas={setBananas}
-              pears={pears}
-              setPears={setPears}
             />
           </Route>
           <Route path="/checkout">
-            <Checkout pears={pears} apples={apples} bananas={bananas} />
+            <Checkout  />
           </Route>
           <Route path="/">
-            <Home totalFruit={pears + apples + bananas} />
+            <Home  />
           </Route>
         </Switch>
       </header>
     </div>
+      </fruitCounterContext.Provider>
   );
 }
 
